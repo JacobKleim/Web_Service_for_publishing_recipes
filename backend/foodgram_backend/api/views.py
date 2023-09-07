@@ -1,4 +1,9 @@
+from api.filters import IngredientFilter, RecipeFilter
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
+from api.serializers import (CreateRecipeSerializer, CustomUserSerializer,
+                             FavoriteSerializer, FollowSerializer,
+                             IngredientSerializer, RecipeSerializer,
+                             ShoppingCartSerializer, TagSerializer)
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.http import Http404, HttpResponse
@@ -7,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
                             Reсipe, ShoppingCart, Tag)
-from rest_framework import filters, serializers, status, viewsets
+from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
@@ -20,7 +25,7 @@ User = get_user_model()
 
 class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
-    serializer_class = serializers.CustomUserSerializer
+    serializer_class = CustomUserSerializer
     pagination_class = PageNumberPagination
     pagination_class.page_size = 6
 
@@ -48,7 +53,7 @@ class CustomUserViewSet(UserViewSet):
     )
     def subscribe(self, request, *args, **kwargs):
         followed_user = get_object_or_404(User, pk=self.kwargs.get('id'))
-        serializer = serializers.FollowSerializer(
+        serializer = FollowSerializer(
             data={'user': request.user.id, 'following': followed_user.id},
             context={'request': request}
         )
@@ -70,11 +75,11 @@ class CustomUserViewSet(UserViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Reсipe.objects.all()
-    serializer_class = serializers.RecipeSerializer
+    serializer_class = RecipeSerializer
     pagination_class = PageNumberPagination
     pagination_class.page_size = 6
     filter_backends = (DjangoFilterBackend, )
-    filterset_class = filters.RecipeFilter
+    filterset_class = RecipeFilter
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
 
     def perform_create(self, serializer):
@@ -82,8 +87,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
-            return serializers.RecipeSerializer
-        return serializers.CreateRecipeSerializer
+            return RecipeSerializer
+        return CreateRecipeSerializer
 
     @action(
         methods=['post', 'delete'],
@@ -92,7 +97,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def favorite(self, request, *args, **kwargs):
         recipe = get_object_or_404(Reсipe, id=self.kwargs.get('pk'))
-        serializer = serializers.FavoriteSerializer(
+        serializer = FavoriteSerializer(
             data={'user': request.user.id, 'recipe': recipe.id},
             context={'request': request}
         )
@@ -117,7 +122,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def shopping_cart(self, request, *args, **kwargs):
         recipe = get_object_or_404(Reсipe, id=self.kwargs.get('pk'))
-        serializer = serializers.ShoppingCartSerializer(
+        serializer = ShoppingCartSerializer(
             data={'user': request.user.id, 'recipe': recipe.id},
             context={'request': request}
         )
@@ -169,13 +174,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
-    serializer_class = serializers.TagSerializer
+    serializer_class = TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
-    serializer_class = serializers.IngredientSerializer
+    serializer_class = IngredientSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_class = filters.IngredientFilter
+    filterset_class = IngredientFilter
     permission_classes = (IsAdminOrReadOnly,)
