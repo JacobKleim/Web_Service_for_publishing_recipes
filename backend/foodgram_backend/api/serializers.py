@@ -1,16 +1,13 @@
-from rest_framework import serializers
-from djoser.serializers import UserSerializer
-from recipes.models import (Reсipe, Tag, Ingredient, FavoriteRecipe, ShoppingCart,
-                            RecipeIngredient)
-from users.models import Follow
 from django.contrib.auth import get_user_model
-from drf_extra_fields.fields import Base64ImageField
 from django.db.models import F
-from rest_framework.fields import SerializerMethodField
-from rest_framework import status
+from djoser.serializers import UserSerializer
+from drf_extra_fields.fields import Base64ImageField
+from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
+                            Reсipe, ShoppingCart, Tag)
+from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from django.shortcuts import get_object_or_404
-
+from rest_framework.fields import SerializerMethodField
+from users.models import Follow
 
 User = get_user_model()
 
@@ -70,7 +67,9 @@ class SubscriptionSerializer(CustomUserSerializer):
         recipes = obj.recipes.all()
         if limit:
             recipes = recipes[:int(limit)]
-        serializer = PreviewRecipeSerializer(recipes, many=True, read_only=True)
+        serializer = PreviewRecipeSerializer(recipes,
+                                             many=True,
+                                             read_only=True)
         return serializer.data
 
     def get_recipes_count(self, obj):
@@ -174,16 +173,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             return False
         return ShoppingCart.objects.filter(
             recipe=obj, user=request.user).exists()
-
-
-# class CreateRecipeIngredientSerializer(serializers.ModelSerializer):
-#     id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
-#     name = serializers.ReadOnlyField(source='ingredient.name')
-#     measurement_unit = serializers.ReadOnlyField(
-#          source='ingredient.measurement_unit')
-#     class Meta:
-#         model = RecipeIngredient
-#         fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
 class CreateRecipeSerializer(serializers.ModelSerializer):

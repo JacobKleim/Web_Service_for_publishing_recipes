@@ -3,9 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 from users.models import Follow, User
 
 
-
-
-
 @admin.register(User)
 class UserAdmin(UserAdmin):
     list_display = (

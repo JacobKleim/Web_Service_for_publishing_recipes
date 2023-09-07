@@ -1,37 +1,29 @@
-from django.db.models import Sum
-from django.contrib.auth import get_user_model
-from rest_framework import serializers
-from rest_framework import status, viewsets
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.response import Response
-from djoser.views import UserViewSet
-from django.shortcuts import get_object_or_404
-from rest_framework.decorators import action
-from rest_framework.serializers import ValidationError
-from django.http import Http404, HttpResponse
-from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
-from recipes.models import Reсipe, Tag, FavoriteRecipe, ShoppingCart, Ingredient, RecipeIngredient
-from users.models import Follow
-from . import serializers
-from . import filters
-from django_filters.rest_framework import DjangoFilterBackend
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
-
+from django.contrib.auth import get_user_model
+from django.db.models import Sum
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from djoser.views import UserViewSet
+from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
+                            Reсipe, ShoppingCart, Tag)
+from rest_framework import serializers, status, viewsets, filters
+from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.serializers import ValidationError
+from users.models import Follow
 
 User = get_user_model()
 
-ALLOWED_USER_METHODS = ('get', 'post', 'delete')
-ALLOWED_METHODS = ('get', 'post', 'patch', 'delete',
-                   'head', 'options', 'trace')
-
 
 class CustomUserViewSet(UserViewSet):
-    # http_method_names = ALLOWED_USER_METHODS
     queryset = User.objects.all()
     serializer_class = serializers.CustomUserSerializer
     pagination_class = PageNumberPagination
     pagination_class.page_size = 6
-    
+
     def get_permissions(self):
         if self.action == 'retrieve':
             return [IsAuthenticated(),]
