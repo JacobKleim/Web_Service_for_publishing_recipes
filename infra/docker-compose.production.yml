@@ -39,6 +39,7 @@ services:
   #     - backend
   #     - frontend
 
+
   gateway:
     image: jacobkl/foodgram_gateway
     env_file: .env
