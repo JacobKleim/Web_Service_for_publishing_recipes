@@ -48,6 +48,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+      - name: Clear Docker cache
+      - run: docker builder prune -a -f
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to Docker 
@@ -79,7 +81,7 @@ jobs:
         with:
           context: ./frontend/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:new
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
   build_gateway_and_push_to_docker_hub:
     name: Push nginx Docker image to DockerHub
     runs-on: ubuntu-latest
