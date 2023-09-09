@@ -79,7 +79,7 @@ jobs:
         with:
           context: ./frontend/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:new
   build_gateway_and_push_to_docker_hub:
     name: Push nginx Docker image to DockerHub
     runs-on: ubuntu-latest
