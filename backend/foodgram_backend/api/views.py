@@ -12,7 +12,7 @@ from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 
-from api import filters, permissions, my_serializers
+from api import filters, permissions, serializers
 from users.models import Follow
 from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
                             Reсipe, ShoppingCart, Tag)
@@ -23,7 +23,7 @@ User = get_user_model()
 
 class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
-    serializer_class = my_serializers.CustomUserSerializer
+    serializer_class = serializers.CustomUserSerializer
     pagination_class = PageNumberPagination
     pagination_class.page_size = 6
 
@@ -40,7 +40,7 @@ class CustomUserViewSet(UserViewSet):
     def subscriptions(self, request, *args, **kwargs):
         queryset = User.objects.filter(following__user=request.user)
         page = self.paginate_queryset(queryset)
-        serializer = my_serializers.SubscriptionSerializer(
+        serializer = serializers.SubscriptionSerializer(
             page, many=True, context={'request': request})
         return self.get_paginated_response(serializer.data)
 
@@ -51,7 +51,7 @@ class CustomUserViewSet(UserViewSet):
     )
     def subscribe(self, request, *args, **kwargs):
         followed_user = get_object_or_404(User, pk=self.kwargs.get('id'))
-        serializer = my_serializers.FollowSerializer(
+        serializer = serializers.FollowSerializer(
             data={'user': request.user.id, 'following': followed_user.id},
             context={'request': request}
         )
@@ -73,7 +73,7 @@ class CustomUserViewSet(UserViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Reсipe.objects.all()
-    serializer_class = my_serializers.RecipeSerializer
+    serializer_class = serializers.RecipeSerializer
     pagination_class = PageNumberPagination
     pagination_class.page_size = 6
     filter_backends = (DjangoFilterBackend, )
@@ -85,8 +85,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
-            return my_serializers.RecipeSerializer
-        return my_serializers.CreateRecipeSerializer
+            return serializers.RecipeSerializer
+        return serializers.CreateRecipeSerializer
 
     @action(
         methods=['post', 'delete'],
@@ -95,7 +95,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def favorite(self, request, *args, **kwargs):
         recipe = get_object_or_404(Reсipe, id=self.kwargs.get('pk'))
-        serializer = my_serializers.FavoriteSerializer(
+        serializer = serializers.FavoriteSerializer(
             data={'user': request.user.id, 'recipe': recipe.id},
             context={'request': request}
         )
@@ -120,7 +120,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def shopping_cart(self, request, *args, **kwargs):
         recipe = get_object_or_404(Reсipe, id=self.kwargs.get('pk'))
-        serializer = my_serializers.ShoppingCartSerializer(
+        serializer = serializers.ShoppingCartSerializer(
             data={'user': request.user.id, 'recipe': recipe.id},
             context={'request': request}
         )
@@ -172,11 +172,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
-    serializer_class = my_serializers.TagSerializer
+    serializer_class = serializers.TagSerializer
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
-    serializer_class = my_serializers.IngredientSerializer
+    serializer_class = serializers.IngredientSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = filters.IngredientFilter
