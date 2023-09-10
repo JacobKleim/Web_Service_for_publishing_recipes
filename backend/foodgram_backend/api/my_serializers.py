@@ -11,6 +11,7 @@ from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
                             Reсipe, ShoppingCart, Tag)
 from users.models import Follow
 
+
 User = get_user_model()
 
 
@@ -46,7 +47,7 @@ class PreviewRecipeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'image', 'cooking_time')
 
 
-class FollowingSerializer(CustomUserSerializer):
+class SubscriptionSerializer(CustomUserSerializer):
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
 
@@ -101,7 +102,7 @@ class FollowSerializer(serializers.ModelSerializer):
         return Follow.objects.create(**validated_data)
 
     def to_representation(self, instance):
-        return FollowingSerializer(
+        return SubscriptionSerializer(
             instance=instance.following,
             context={'request': self.context.get('request')}
         ).data
