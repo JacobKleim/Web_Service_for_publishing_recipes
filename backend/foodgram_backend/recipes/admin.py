@@ -4,6 +4,11 @@ from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
                             Reсipe, ShoppingCart, Tag)
 
 
+class RecipeIngredientInline(admin.TabularInline):
+    model = RecipeIngredient
+    extra = 1
+
+
 @admin.register(RecipeIngredient)
 class RecipeIngredientAdmin(admin.ModelAdmin):
     list_display = ('ingredients', 'recipe', 'amount',)
@@ -21,6 +26,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Reсipe)
 class RecipeAdmin(admin.ModelAdmin):
+    inlines = (RecipeIngredientInline, )
     list_display = ('name', 'id', 'author', 'added_in_favorites')
     readonly_fields = ('added_in_favorites',)
     list_filter = ('author', 'name', 'tags',)

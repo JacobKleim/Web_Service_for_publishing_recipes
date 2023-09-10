@@ -1,25 +1,27 @@
-from api.filters import IngredientFilter, RecipeFilter
-from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
-from api.serializers import (CreateRecipeSerializer, CustomUserSerializer,
-                             FavoriteSerializer, FollowSerializer,
-                             IngredientSerializer, RecipeSerializer,
-                             ShoppingCartSerializer, SubscriptionSerializer,
-                             TagSerializer)
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
-                            Reсipe, ShoppingCart, Tag)
+
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
+
+from api.filters import IngredientFilter, RecipeFilter
+from api.permissions import IsAuthorOrReadOnly
+from api.serializers import (CreateRecipeSerializer, CustomUserSerializer,
+                             FavoriteSerializer, FollowSerializer,
+                             IngredientSerializer, RecipeSerializer,
+                             ShoppingCartSerializer, SubscriptionSerializer,
+                             TagSerializer)
 from users.models import Follow
+from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
+                            Reсipe, ShoppingCart, Tag)
 
 User = get_user_model()
 
@@ -81,7 +83,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class.page_size = 6
     filter_backends = (DjangoFilterBackend, )
     filterset_class = RecipeFilter
-    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
+    permission_classes = (IsAuthorOrReadOnly,)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -176,7 +178,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = (IsAdminOrReadOnly,)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -184,4 +185,3 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = IngredientSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter
-    permission_classes = (IsAdminOrReadOnly,)
