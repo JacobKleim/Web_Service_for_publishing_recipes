@@ -46,7 +46,7 @@ class PreviewRecipeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'image', 'cooking_time')
 
 
-class SubscriptionSerializer(CustomUserSerializer):
+class FollowingSerializer(CustomUserSerializer):
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
 
@@ -101,7 +101,7 @@ class FollowSerializer(serializers.ModelSerializer):
         return Follow.objects.create(**validated_data)
 
     def to_representation(self, instance):
-        return SubscriptionSerializer(
+        return FollowingSerializer(
             instance=instance.following,
             context={'request': self.context.get('request')}
         ).data

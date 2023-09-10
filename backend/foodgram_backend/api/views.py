@@ -40,7 +40,7 @@ class CustomUserViewSet(UserViewSet):
     def subscriptions(self, request, *args, **kwargs):
         queryset = User.objects.filter(following__user=request.user)
         page = self.paginate_queryset(queryset)
-        serializer = serializers.SubscriptionSerializer(
+        serializer = serializers.FollowingSerializer(
             page, many=True, context={'request': request})
         return self.get_paginated_response(serializer.data)
 
