@@ -3,6 +3,8 @@ FROM python:3.9
 WORKDIR /app
 
 COPY requirements.txt .
+RUN python -m venv venv
+RUN source venv/Scripts/activate
 
 RUN pip install -r requirements.txt --no-cache-dir
 

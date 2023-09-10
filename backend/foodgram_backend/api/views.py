@@ -29,7 +29,7 @@ class CustomUserViewSet(UserViewSet):
 
     def get_permissions(self):
         if self.action == 'retrieve':
-            return [IsAuthenticated(),]
+            return [IsAuthenticated(), ]
         return super().get_permissions()
 
     @action(
