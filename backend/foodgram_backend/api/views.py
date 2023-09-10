@@ -3,7 +3,8 @@ from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from api.serializers import (CreateRecipeSerializer, CustomUserSerializer,
                              FavoriteSerializer, FollowSerializer,
                              IngredientSerializer, RecipeSerializer,
-                             ShoppingCartSerializer, TagSerializer)
+                             ShoppingCartSerializer, SubscriptionSerializer,
+                             TagSerializer)
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.http import Http404, HttpResponse
@@ -12,7 +13,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
                             Reсipe, ShoppingCart, Tag)
-from rest_framework import serializers, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
@@ -42,7 +43,7 @@ class CustomUserViewSet(UserViewSet):
     def subscriptions(self, request, *args, **kwargs):
         queryset = User.objects.filter(following__user=request.user)
         page = self.paginate_queryset(queryset)
-        serializer = serializers.SubscriptionSerializer(
+        serializer = SubscriptionSerializer(
             page, many=True, context={'request': request})
         return self.get_paginated_response(serializer.data)
 
