@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import display
+
 from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
                             Reсipe, ShoppingCart, Tag)
 
@@ -26,8 +27,8 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Reсipe)
 class RecipeAdmin(admin.ModelAdmin):
-    inlines = (RecipeIngredientInline, )
     list_display = ('name', 'id', 'author', 'added_in_favorites')
+    inlines = (RecipeIngredientInline, )
     readonly_fields = ('added_in_favorites',)
     list_filter = ('author', 'name', 'tags',)
 
