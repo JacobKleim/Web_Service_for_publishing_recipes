@@ -5,7 +5,7 @@ charset-normalizer==3.2.0
 cryptography==41.0.3
 defusedxml==0.7.1
 Django==4.2.4
-django-colorfield==0.3.3
+django-colorfield
 django-filter==23.2
 django-templated-mail==1.1.1
 djangorestframework==3.14.0
