@@ -47,7 +47,7 @@ class RecipeAdmin(admin.ModelAdmin):
     #         raise ValidationError(
     #             "У рецепта должен быть хотя бы один тег.")
 
-        super().save_model(request, obj, form, change)
+    #     super().save_model(request, obj, form, change)
 
     def get_ingredients_display(self, obj):
         return ", ".join(
