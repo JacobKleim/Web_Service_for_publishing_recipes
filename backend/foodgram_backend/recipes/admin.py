@@ -36,7 +36,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     @display(description='Количество в избранных')
     def added_in_favorites(self, obj):
-        return obj.favorite_recipe_set.count()
+        return obj.favoriterecipe_set.count()
 
     # def save_model(self, request, obj, form, change):
     #     if not obj.ingredients.exists():
