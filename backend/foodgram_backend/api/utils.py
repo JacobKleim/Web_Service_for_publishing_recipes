@@ -17,7 +17,7 @@ def generate_shopping_list(user):
     for num, item in enumerate(cart_ingredients):
         name = item['ingredients__name']
         measurement_unit = item['ingredients__measurement_unit']
-        amount = item['cart_amount']
+        amount = item['shoppingcart_set_amount']
         shopping_list += (f'{num + 1}. {name} - '
                           f'{amount} {measurement_unit} \n')
 
