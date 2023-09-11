@@ -1,5 +1,3 @@
-from django.contrib.auth import get_user_model
-from django.db.models import Sum
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,19 +11,16 @@ from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 
 from api import filters, permissions, serializers
-from users.models import Follow
-from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
+from api.utils import generate_shopping_list
+from users.models import Follow, User
+from recipes.models import (FavoriteRecipe, Ingredient,
                             Reсipe, ShoppingCart, Tag)
-
-
-User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.CustomUserSerializer
     pagination_class = PageNumberPagination
-    pagination_class.page_size = 6
 
     def get_permissions(self):
         if self.action == 'retrieve':
@@ -76,7 +71,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Reсipe.objects.all()
     serializer_class = serializers.RecipeSerializer
     pagination_class = PageNumberPagination
-    pagination_class.page_size = 6
     filter_backends = (DjangoFilterBackend, )
     filterset_class = filters.RecipeFilter
     permission_classes = (permissions.IsAuthorOrAdminOrReadOnly,)
@@ -147,26 +141,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated]
     )
     def download_shopping_cart(self, request):
-        cart_ingredients = (
-            RecipeIngredient.objects.filter(
-                recipe__cart__user=request.user
-            ).values(
-                'ingredients__name',
-                'ingredients__measurement_unit',
-            ).annotate(cart_amount=Sum('amount')).order_by('-amount')
-        )
-
-        shopping_list = ''
-        for num, item in enumerate(cart_ingredients):
-            name = item['ingredients__name']
-            measurement_unit = item['ingredients__measurement_unit']
-            amount = item['cart_amount']
-            shopping_list += (f'{num + 1}. {name} - '
-                              f'{amount} {measurement_unit} \n')
+        shopping_list = generate_shopping_list(request.user)
 
         filename = 'shopping_list.txt'
-        response = HttpResponse(shopping_list,
-                                content_type='text/plain,charset=utf8')
+        response = HttpResponse(
+            shopping_list, content_type='text/plain,charset=utf8')
         response['Content-Disposition'] = f'attachment; filename={filename}'
         return response
 

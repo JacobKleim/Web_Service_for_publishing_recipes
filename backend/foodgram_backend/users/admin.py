@@ -11,8 +11,17 @@ class UserAdmin(UserAdmin):
         'email',
         'first_name',
         'last_name',
+        'recipe_count',
+        'follower_count',
     )
+
     list_filter = ('email', 'first_name')
+
+    def recipe_count(self, obj):
+        return obj.recipes.count()
+
+    def follower_count(self, obj):
+        return obj.follower.count()
 
 
 @admin.register(Follow)
