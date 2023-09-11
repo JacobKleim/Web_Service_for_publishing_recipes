@@ -6,11 +6,11 @@ from recipes.models import RecipeIngredient
 def generate_shopping_list(user):
     cart_ingredients = (
         RecipeIngredient.objects.filter(
-            recipe__cart__user=user
+            recipe__shoppingcart_set__user=user
         ).values(
             'ingredients__name',
             'ingredients__measurement_unit',
-        ).annotate(cart_amount=Sum('amount')).order_by('-amount')
+        ).annotate(shoppingcart_set_amount=Sum('amount')).order_by('-amount')
     )
 
     shopping_list = ''
