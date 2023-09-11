@@ -38,14 +38,14 @@ class RecipeAdmin(admin.ModelAdmin):
     def added_in_favorites(self, obj):
         return obj.favorite_recipe_set.count()
 
-    def save_model(self, request, obj, form, change):
-        if not obj.ingredients.exists():
-            raise ValidationError(
-                "У рецепта должен быть хотя бы один ингредиент.")
+    # def save_model(self, request, obj, form, change):
+    #     if not obj.ingredients.exists():
+    #         raise ValidationError(
+    #             "У рецепта должен быть хотя бы один ингредиент.")
 
-        if not obj.tags.exists():
-            raise ValidationError(
-                "У рецепта должен быть хотя бы один тег.")
+    #     if not obj.tags.exists():
+    #         raise ValidationError(
+    #             "У рецепта должен быть хотя бы один тег.")
 
         super().save_model(request, obj, form, change)
 
