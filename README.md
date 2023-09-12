@@ -65,7 +65,6 @@ Foodgram создан для обмена кулинарными идеями и
     SECRET_KEY=KEY # ваш ключ
 ```
 
-### ## Запуск проекта в Docker-контейнерах
 Клонировать репозиторий и перейти в директорию `infra/`:
 ```bash
 git git@github.com:JacobKleim/foodgram-project-react.git
@@ -93,7 +92,7 @@ docker-compose exec web python manage.py createsuperuser
 ◾ Остановить:
 ```
 docker-compose down -v
-
+```
 
 ## Автор
 
