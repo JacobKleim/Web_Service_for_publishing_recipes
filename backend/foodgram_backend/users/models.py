@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import F, CheckConstraint
 from django.db import models
+from django.db.models import CheckConstraint, F
 
 from recipes.constants import LENGTH_EMAIL, LENGTH_USER
 
