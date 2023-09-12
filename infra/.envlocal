@@ -1,0 +1,10 @@
+POSTGRES_USER=django_user
+POSTGRES_PASSWORD=mysecretpassword
+POSTGRES_DB=django
+
+DB_HOST=db
+DB_PORT=5432
+
+SECRET_KEY=django-insecure-lrf6m7-iur)nuo+k=gl#9=7vs==z$b%l31!dfhud--3@%0#_d_
+DEBUG=True
+ALLOWED_HOSTS=158.160.74.176,127.0.0.1,localhost

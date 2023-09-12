@@ -186,6 +186,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(), many=True)
     ingredients = RecipeIngredientSerializer(many=True)
     cooking_time = serializers.IntegerField()
+    name = serializers.CharField()
 
     class Meta:
         model = Reсipe
