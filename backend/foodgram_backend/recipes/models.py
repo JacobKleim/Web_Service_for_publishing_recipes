@@ -52,7 +52,7 @@ class Reсipe(models.Model):
         through='RecipeIngredient',
         related_name="recipes",
         verbose_name='Ингредиенты'
-        )
+    )
     tags = models.ManyToManyField(Tag, verbose_name='Теги')
     cooking_time = models.PositiveIntegerField(
         'Время приготовления',
@@ -63,8 +63,8 @@ class Reсipe(models.Model):
             MaxValueValidator(
                 1000000,
                 message='Введите число, не больше 1000000!')
-            ],
-        )
+        ]
+    )
 
     class Meta:
         ordering = ['name']
@@ -81,12 +81,12 @@ class RecipeIngredient(models.Model):
         Ingredient,
         on_delete=models.CASCADE,
         verbose_name='Ингредиент'
-        )
+    )
     recipe = models.ForeignKey(
         Reсipe, related_name='recipe_ingredient',
         on_delete=models.CASCADE,
         verbose_name='Рецепт'
-        )
+    )
     amount = models.PositiveIntegerField(
         'Количество',
         validators=[
@@ -96,8 +96,8 @@ class RecipeIngredient(models.Model):
             MaxValueValidator(
                 1000000,
                 message='Введите число, не больше 1000000!')
-            ]
-        )
+        ]
+    )
 
     class Meta:
         verbose_name = 'Ингредиент в рецепте'
