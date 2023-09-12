@@ -1,10 +1,40 @@
+from django import forms
 from django.contrib import admin
 from django.contrib.admin import display
 
-# from rest_framework.serializers import ValidationError
-
 from recipes.models import (FavoriteRecipe, Ingredient, RecipeIngredient,
                             Reсipe, ShoppingCart, Tag)
+
+
+class RecipeAdminForm(forms.ModelForm):
+    class Meta:
+        model = Reсipe
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        ingredients = cleaned_data.get('ingredients')
+        tags = cleaned_data.get('tags')
+
+        if not ingredients:
+            raise forms.ValidationError('Добавьте хотя бы один ингредиент.')
+
+        if not tags:
+            raise forms.ValidationError('Добавьте хотя бы один тег.')
+
+
+class RecipeIngredientForm(forms.ModelForm):
+    class Meta:
+        model = RecipeIngredient
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        amount = cleaned_data.get('amount')
+
+        if amount <= 0:
+            raise forms.ValidationError(
+                'Количество ингредиента должно быть больше 0.')
 
 
 class RecipeIngredientInline(admin.TabularInline):
@@ -37,17 +67,6 @@ class RecipeAdmin(admin.ModelAdmin):
     @display(description='Количество в избранных')
     def added_in_favorites(self, obj):
         return obj.favoriterecipe_set.count()
-
-    # def save_model(self, request, obj, form, change):
-    #     if not obj.ingredients.exists():
-    #         raise ValidationError(
-    #             "У рецепта должен быть хотя бы один ингредиент.")
-
-    #     if not obj.tags.exists():
-    #         raise ValidationError(
-    #             "У рецепта должен быть хотя бы один тег.")
-
-    #     super().save_model(request, obj, form, change)
 
     def get_ingredients_display(self, obj):
         return ", ".join(

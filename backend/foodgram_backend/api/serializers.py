@@ -204,7 +204,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         if not any(char.isalpha() for char in name):
             raise serializers.ValidationError(
                 {'name':
-                 'Название не может содержать только цифры и символы.'})
+                 'Название не может содержать только цифры и знаки.'})
         return value
 
     def validate_ingredients(self, value):
@@ -215,10 +215,6 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             if ingredient in ingredients_list:
                 raise ValidationError({
                     'ingredients': 'Ингридиенты не могут повторяться!'
-                })
-            if int(item['amount']) <= 0:
-                raise ValidationError({
-                    'amount': 'Количество ингредиента должно быть больше 0!'
                 })
             ingredients_list.append(ingredient)
         return value

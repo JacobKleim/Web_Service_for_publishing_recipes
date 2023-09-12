@@ -2,16 +2,14 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import F, CheckConstraint
 from django.db import models
 
-
-LENGTH = 150
-LENGTH_EMAIL = 254
+from recipes.constants import LENGTH_EMAIL, LENGTH_USER
 
 
 class User(AbstractUser):
-    username = models.CharField(max_length=LENGTH, unique=True)
+    username = models.CharField(max_length=LENGTH_USER, unique=True)
     email = models.EmailField(max_length=LENGTH_EMAIL, unique=True)
-    first_name = models.CharField(max_length=LENGTH)
-    last_name = models.CharField(max_length=LENGTH)
+    first_name = models.CharField(max_length=LENGTH_USER)
+    last_name = models.CharField(max_length=LENGTH_USER)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
         'username',

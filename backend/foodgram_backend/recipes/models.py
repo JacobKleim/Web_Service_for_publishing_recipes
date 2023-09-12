@@ -3,11 +3,8 @@ from django.db import models
 
 from colorfield.fields import ColorField
 
+from recipes.constants import LENGTH, LENGTH_COLOR
 from users.models import User
-
-
-LENGTH = 200
-LENGTH_COLOR = 7
 
 
 class Ingredient(models.Model):
@@ -104,7 +101,6 @@ class RecipeIngredient(models.Model):
         )
 
     class Meta:
-        ordering = ['ingredients']
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецептах'
 
