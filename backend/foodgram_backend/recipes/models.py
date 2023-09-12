@@ -130,7 +130,7 @@ class AbstractBaseFavorite(models.Model):
 
 class FavoriteRecipe(AbstractBaseFavorite):
     """Модель избранных рецептов"""
-    
+
     class Meta:
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
