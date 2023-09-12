@@ -151,12 +151,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Tag.objects.all()
+    queryset = Tag.objects.all().order_by('name')
     serializer_class = serializers.TagSerializer
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Ingredient.objects.all()
+    queryset = Ingredient.objects.all().order_by('name')
     serializer_class = serializers.IngredientSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = filters.IngredientFilter
