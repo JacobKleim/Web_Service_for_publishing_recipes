@@ -130,6 +130,10 @@ class AbstractBaseFavorite(models.Model):
 
 class FavoriteRecipe(AbstractBaseFavorite):
     """Модель избранных рецептов"""
+    
+    class Meta:
+        verbose_name = 'Избранный рецепт'
+        verbose_name_plural = 'Избранные рецепты'
 
     def __str__(self):
         return f'{self.user} {self.recipe}'
@@ -137,6 +141,10 @@ class FavoriteRecipe(AbstractBaseFavorite):
 
 class ShoppingCart(AbstractBaseFavorite):
     """Модель корзины товаров"""
+
+    class Meta:
+        verbose_name = 'Корзина покупок'
+        verbose_name_plural = 'Корзины покупок'
 
     def __str__(self):
         return f'{self.user} {self.recipe}'
