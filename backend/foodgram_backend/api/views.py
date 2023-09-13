@@ -152,7 +152,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all().order_by('name')
     serializer_class = serializers.TagSerializer
-    pagination_class = None
+    pagination_class = PageNumberPagination
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -160,4 +160,4 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.IngredientSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = filters.IngredientFilter
-    pagination_class = None
+    pagination_class = PageNumberPagination
