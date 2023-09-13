@@ -135,3 +135,5 @@ dmypy.json
 media/
 
 .vscode
+
+.flake8

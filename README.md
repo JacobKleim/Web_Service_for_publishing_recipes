@@ -2,6 +2,11 @@
 
 **Foodgram** - это веб-приложение для любителей еды, которое позволяет создавать, делиться и открывать свои любимые рецепты. С Foodgram вы можете зарегистрироваться, создавать и публиковать свои собственные рецепты, а также находить и добавлять рецепты других пользователей в закладки. Вы также можете подписываться на авторов рецептов, чтобы быть в курсе их новых кулинарных шедевров.
 
+
+## Проект: http://158.160.74.176
+
+
+
 ## Описание проекта  
  - Бекенд приложения написан на языке [Django](https://www.djangoproject.com).
  - API реализована с использованием [Django REST Framework](https://www.django-rest-framework.org).
@@ -52,6 +57,15 @@ Foodgram создан для обмена кулинарными идеями и
 
 
 ## Запуск проекта
+
+Клонировать репозиторий и перейти в директорию `infra/`:
+```bash
+git git@github.com:JacobKleim/foodgram-project-react.git
+```
+```bash
+cd foodgram-project-react/infra
+```
+
 Создайте в директории infra .env файл с параметрами:
 ```
     DB_ENGINE=django.db.backends.postgresql  # указываем, что работаем с postgresql 
@@ -63,14 +77,6 @@ Foodgram создан для обмена кулинарными идеями и
     
     ALLOWED_HOSTS=localhost #Ваши хосты
     SECRET_KEY=KEY # ваш ключ
-```
-
-Клонировать репозиторий и перейти в директорию `infra/`:
-```bash
-git git@github.com:JacobKleim/foodgram-project-react.git
-```
-```bash
-cd foodgram-project-react/infra
 ```
 
 Установите и настройте [Doсker](https://www.docker.com/products/docker-desktop/), если у вас его нет.
