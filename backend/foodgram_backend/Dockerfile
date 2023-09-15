@@ -4,7 +4,9 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt --no-cache-dir
+RUN python -m venv venv
+
+RUN . venv/bin/activate && pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
